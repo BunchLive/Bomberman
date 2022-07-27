@@ -70,6 +70,7 @@ public class Player : MonoBehaviour
         myTransform = transform;
         animator = myTransform.Find ("PlayerModel").GetComponent<Animator> ();
 
+        // We do this every time just for convenience.
         SaveColors();
         
         var colors = LoadColors();

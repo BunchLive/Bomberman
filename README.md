@@ -1,6 +1,6 @@
 This is a very simple Bomberman clone!
 
-USING FLATBUFFFERS
+### USING FLATBUFFFERS
 
 Flatbuffers are used to store colors for characters. You don't need to know much about them, except the following. 
 
