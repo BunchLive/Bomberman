@@ -32,7 +32,6 @@ using UnityEngine;
 using System.Collections;
 using System;
 using System.IO;
-using FlatBuffers;
 
 public class Player : MonoBehaviour
 {
@@ -69,30 +68,6 @@ public class Player : MonoBehaviour
         rigidBody = GetComponent<Rigidbody> ();
         myTransform = transform;
         animator = myTransform.Find ("PlayerModel").GetComponent<Animator> ();
-
-        // We do this every time just for convenience.
-        SaveColors();
-        
-        var colors = LoadColors();
-
-        // TINTING PLAYERS HAPPENS HERE
-        if (playerNumber == 1)
-        {
-            GetComponentInChildren<SkinnedMeshRenderer>().material.color = new UnityEngine.Color(
-                colors.SharedColor.Value.Red,
-                colors.SharedColor.Value.Blue,
-                colors.SharedColor.Value.Green
-            );
-        }
-        else
-        {
-            GetComponentInChildren<SkinnedMeshRenderer>().material.color = new UnityEngine.Color(
-                colors.SharedColor.Value.Red,
-                colors.SharedColor.Value.Blue,
-                colors.SharedColor.Value.Green
-            );
-        }
-
     }
 
     // Update is called once per frame
@@ -224,34 +199,5 @@ public class Player : MonoBehaviour
         }
     }
 
-    private Colors LoadColors()
-    {
-        // using flatbuffers
-        
-        byte[] bytes = File.ReadAllBytes(Path.Combine(Application.dataPath, "colors"));  /* the data you just read */
-        var buf = new ByteBuffer(bytes);
-
-        return Colors.GetRootAsColors(buf);
-    }
-
-    private void SaveColors()
-    {
-        // using flatbuffers
-        // Uncomment the lines below once you've made them available by revising the schema.
-        
-        var builder = new FlatBufferBuilder(1024);
-
-        Colors.StartColors(builder);
-        Colors.AddSharedColor(builder, Color.CreateColor(builder, 1f, 1f, 1f));
-        //Colors.AddPlayer1Color(builder, Color.CreateColor(builder, 1f, 0f, 0f));
-        //Colors.AddPlayer2Color(builder, Color.CreateColor(builder, 0f, 1f, 0f));
-        var offset = Colors.EndColors(builder);
-
-        builder.Finish(offset.Value);
-        
-        byte[] buf = builder.SizedByteArray();
-        
-        File.WriteAllBytes(Path.Combine(Application.dataPath, "colors"), buf);
-        
-    }
+    
 }
